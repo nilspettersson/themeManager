@@ -1,0 +1,22 @@
+{
+  "name": "theme-creator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "bin": {
+    "css": "dist/index.js"
+  },
+  "types": "dist",
+  "files": [
+    "dist/*"
+  ],
+  "scripts": {
+    "tsc": "tsc"
+  },
+  "author": "Nils Pettersson",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.6.0",
+    "typescript": "^5.2.2"
+  }
+}
