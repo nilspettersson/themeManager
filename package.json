@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "bin": {
-    "css": "dist/index.js"
+    "compile": "dist/index.js"
   },
   "types": "dist",
   "files": [
@@ -15,8 +15,12 @@
   },
   "author": "Nils Pettersson",
   "license": "ISC",
+  "dependencies": {
+    "react": "18.2.0"
+  },
   "devDependencies": {
     "@types/node": "^20.6.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "@types/react": "^18.2.6"
   }
 }
