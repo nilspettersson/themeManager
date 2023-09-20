@@ -1,5 +1,10 @@
-import React, { createContext, useContext, useState } from "react";
-import { PropsWithChildren } from "react"; // Import PropsWithChildren separately
+import {
+  PropsWithChildren,
+  ReactNode,
+  createContext,
+  useContext,
+  useState,
+} from "react";
 import { ThemeColorsType, ThemeCreatorType } from "./types";
 
 function useThemeContext<T extends ThemeCreatorType>(theme: ThemeCreatorType) {
@@ -13,8 +18,6 @@ function useThemeContext<T extends ThemeCreatorType>(theme: ThemeCreatorType) {
       colors: theme.colors[colorScheme] as T["colors"]["light"],
       vars: themeWithoutColors as Omit<T, "colors">,
     },
-    //customTheme: theme as Omit<T, "colors">,
-    //themeColors: theme.colors[colorScheme] as T["colors"]["light"],
   };
 }
 
@@ -23,10 +26,13 @@ const ThemeContext = createContext<ReturnType<typeof useThemeContext>>(
 );
 
 export function ThemeProvider<T extends ThemeCreatorType>({
+  theme,
   children,
-}: PropsWithChildren) {
-  const ctx = useThemeContext<T>({ colors: {} }); // Pass the generic type T
-
+}: {
+  theme: ThemeCreatorType;
+  children: ReactNode;
+}) {
+  const ctx = useThemeContext<T>(theme);
   return <ThemeContext.Provider value={ctx}>{children}</ThemeContext.Provider>;
 }
 
