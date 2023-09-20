@@ -6,4 +6,4 @@ type ThemeRequireredValues = {
   colors: ThemeColorsType;
 };
 
-export type ThemeCreatorType = ThemeRequireredValues & Record<string, any>;
+export type ThemeType = ThemeRequireredValues & Record<string, any>;

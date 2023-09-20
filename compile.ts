@@ -6,12 +6,19 @@ import ts from "typescript";
 const themeCreator = () => {
   let tsFilename = "";
   let cssFilename = "";
-  if (process.argv.length >= 4) {
+  let sass = false;
+  let tailwind = false;
+  if (process.argv.length >= 5) {
     tsFilename = process.argv[3];
-    if (process.argv.length >= 5) {
-      cssFilename = process.argv[4];
+    cssFilename = process.argv[4];
+    for (let i = 5; i < process.argv.length; i++) {
+      if (process.argv[i] == "sass") {
+        sass = true;
+      } else if (process.argv[i] == "tailwind") {
+        tailwind = true;
+      }
     }
-  }
+  } else throw "Missing arguments";
 
   fs.readFile(tsFilename, "utf8", (err, data) => {
     if (err) {
@@ -32,8 +39,10 @@ const themeCreator = () => {
       throw new Error("TypeScript compilation failed.");
     }
 
-    const themeObject = eval(result.outputText);
-    console.log(themeObject);
+    let themeObject = eval(result.outputText);
+    if (tailwind) {
+      themeObject = themeObject.theme;
+    }
 
     const themeColors = { ...themeObject.colors };
     themeObject.colors = undefined;
@@ -44,8 +53,6 @@ const themeCreator = () => {
     let sassVariables = "";
     for (const key in themeColors) {
       const themeColor = themeColors[key];
-
-      console.log("themeColors", themeColor);
 
       const colorlist = getValuesInobjectRecursive("color", themeColor);
       let colors = "";
@@ -70,11 +77,13 @@ const themeCreator = () => {
 
     const values = getValuesInobjectRecursive("", themeObject);
     let cssVariables = "";
-    cssVariables += sassVariables;
-    values.forEach(
-      (color) =>
-        (cssVariables += "$" + color.key + ": var(--" + color.key + ");\n")
-    );
+    if (sass) {
+      cssVariables += sassVariables;
+      values.forEach(
+        (color) =>
+          (cssVariables += "$" + color.key + ": var(--" + color.key + ");\n")
+      );
+    }
 
     cssVariables += ":root { \n";
     cssVariables += rootColors + "\n";
@@ -90,7 +99,6 @@ const themeCreator = () => {
       if (err) {
         console.error(err);
       }
-      // file written successfully
     });
   });
 };
