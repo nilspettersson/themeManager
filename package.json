@@ -2,6 +2,17 @@
   "name": "react-vario-theme",
   "version": "1.0.4",
   "description": "Versatile theming tool for React applications, effortlessly transforming TypeScript objects into CSS variables.",
+  "keywords": [
+    "React theming",
+    "CSS variables",
+    "TypeScript",
+    "dynamic",
+    "colors",
+    "theme",
+    "switching",
+    "context",
+    "provider"
+  ],
   "main": "dist/index.js",
   "module": "dist/index.js",
   "bin": {
