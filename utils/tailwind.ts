@@ -3,8 +3,7 @@ export function tailwindColors(theme: any) {
   let convertedColors = {} as any;
 
   for (const key in colors) {
-    //const value = colors[key];
-    convertedColors[key] = "var(--color-" + key + ")";
+    convertedColors["color-" + key] = "var(--color-" + key + ")";
   }
   return convertedColors;
 }
