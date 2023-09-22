@@ -103,13 +103,6 @@ const themeCreator = () => {
   });
 };
 
-function cssVariable(root: string, key: string, value: string) {
-  if (root !== "") {
-    return "--" + root + "-" + key + ": " + value;
-  }
-  return "--" + key + ": " + value;
-}
-
 function getValuesInobjectRecursive(root: string, object: any) {
   const values: Array<{ key: string; value: string }> = [];
   for (const key in object) {
