@@ -1,6 +1,6 @@
 {
   "name": "react-vario-theme",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Versatile theming tool for React applications, effortlessly transforming TypeScript objects into CSS variables.",
   "keywords": [
     "React theming",
