@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/react-vario-theme)
 
-`react-vario-theme` is a tool for managing theming in React applications. Easily convert a TypeScript theme object into CSS variables and seamlessly switch between multiple themes using the `ThemeProvider` context.
+**react-vario-theme** is a tool for managing themes in React applications. Easily convert a TypeScript theme object into CSS variables and seamlessly switch between multiple themes using the **ThemeVarioProvider** context.
 
 ## Features
 
