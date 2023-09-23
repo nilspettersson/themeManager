@@ -40,10 +40,6 @@ const themeCreator = () => {
     }
 
     let themeObject = eval(result.outputText);
-    if (tailwind) {
-      themeObject = themeObject.theme;
-    }
-
     const themeColors = { ...themeObject.colors };
     themeObject.colors = undefined;
 

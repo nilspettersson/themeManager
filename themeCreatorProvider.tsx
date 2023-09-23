@@ -1,17 +1,46 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { ThemeType } from "./types";
+import { tailwindTheme } from "./utils/tailwind";
+
+function convertTocssVars(theme: any) {
+  const colors = { ...theme.colors.light } as any;
+  let convertedColors = {} as any;
+
+  for (const key in colors) {
+    convertedColors[key] = "var(--color-" + key + ")";
+  }
+  return convertedColors;
+}
 
 function useThemeContext<T extends ThemeType>(theme: ThemeType) {
   type Colors = keyof T["colors"];
-  const [colorScheme, setColorScheme] = useState<Colors & "light">("light");
+  const [colorScheme, setColorScheme] = useState<string>("light");
 
-  const themeWithoutColors = { ...theme } as any;
+  const themeWithoutColors = tailwindTheme(theme) as any;
   themeWithoutColors.colors = undefined;
+
+  const colors = convertTocssVars(theme) as Record<
+    keyof T["colors"]["light"],
+    string
+  >;
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", colorScheme);
+  }, [colorScheme]);
+
   return {
-    customTheme: {
-      colors: theme.colors[colorScheme] as T["colors"]["light"],
+    theme: {
+      colors: colors,
       vars: themeWithoutColors as Omit<T, "colors">,
     },
+    colorScheme,
+    changeColorScheme: (scheme: Colors) => setColorScheme(scheme as string),
   };
 }
 
@@ -19,17 +48,17 @@ const ThemeContext = createContext<ReturnType<typeof useThemeContext>>(
   {} as never
 );
 
-export function ThemeProvider<T extends ThemeType>({
+export function VarioThemeProvider<T extends ThemeType>({
   theme,
   children,
 }: {
-  theme: ThemeType;
+  theme: T;
   children: ReactNode;
 }) {
-  const ctx = useThemeContext<T>(theme);
+  const ctx = useThemeContext<typeof theme>(theme);
   return <ThemeContext.Provider value={ctx}>{children}</ThemeContext.Provider>;
 }
 
-export function useCustomTheme<T extends ThemeType>() {
+export function useVarioTheme<T extends ThemeType>() {
   return useContext(ThemeContext) as ReturnType<typeof useThemeContext<T>>;
 }

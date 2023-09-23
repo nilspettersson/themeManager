@@ -19,7 +19,7 @@ export function tailwindTheme(theme: any) {
       tailwindTheme[key] = {};
       let currentObjValues = getValuesInobjectRecursive("", themeMisc[key]);
       currentObjValues.forEach((item) => {
-        tailwindTheme[key][item.key] = "var(--" + item.key + ")";
+        tailwindTheme[key][item.key] = "var(--" + key + "-" + item.key + ")";
       });
     } else if (typeof value === "string") {
       tailwindTheme[key] = "var(--" + key + ")";
