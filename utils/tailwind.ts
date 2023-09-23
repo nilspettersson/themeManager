@@ -2,9 +2,10 @@ export function tailwindColors(theme: any) {
   const colors = { ...theme.colors.light } as any;
   let convertedColors = {} as any;
 
-  for (const key in colors) {
-    convertedColors["color-" + key] = "var(--color-" + key + ")";
-  }
+  let currentObjValues = getValuesInobjectRecursive("color", colors);
+  currentObjValues.forEach((item) => {
+    convertedColors[item.key] = "var(--" + item.key + ")";
+  });
   return convertedColors;
 }
 
@@ -30,11 +31,19 @@ export function tailwindTheme(theme: any) {
 }
 
 // console.log(
-//   tailwindTheme({
+//   tailwindColors({
 //     colors: {
 //       light: {
-//         primary: "red",
-//         background: "white",
+//         primary: {
+//           default: "#00bfff", // Lighter shade of blue
+//           hover: "#009ad7", // Slightly darker blue on hover
+//           active: "#007baa", // Even darker blue for active state
+//         },
+//         secondary: {
+//           default: "#757575", // Grey
+//           hover: "#626262", // Dark grey on hover
+//           active: "#505050", // Even darker grey for active state
+//         },
 //       },
 //       dark: {
 //         primary: "green",

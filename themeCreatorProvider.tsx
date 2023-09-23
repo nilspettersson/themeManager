@@ -9,13 +9,29 @@ import { ThemeType } from "./types";
 import { tailwindTheme } from "./utils/tailwind";
 
 function convertTocssVars(theme: any) {
-  const colors = { ...theme.colors.light } as any;
-  let convertedColors = {} as any;
+  const key = Object.keys(theme.colors)[0];
+  return getValuesInobjectRecursive("color", { ...theme.colors[key ?? ""] });
+}
 
-  for (const key in colors) {
-    convertedColors[key] = "var(--color-" + key + ")";
+function getValuesInobjectRecursive(root: string, object: any) {
+  for (const key in object) {
+    const value = object[key];
+    if (typeof value === "string") {
+      if (root !== "") {
+        object[key] = "var(--" + root + "-" + key + ")";
+      } else {
+        object[key] = "var(" + root + key + ")";
+      }
+
+      continue;
+    } else if (typeof value === "object") {
+      object[key] = getValuesInobjectRecursive(
+        root + (root !== "" ? "-" : "") + key,
+        value
+      );
+    }
   }
-  return convertedColors;
+  return object;
 }
 
 function useThemeContext<T extends ThemeType>(theme: ThemeType) {
@@ -25,10 +41,7 @@ function useThemeContext<T extends ThemeType>(theme: ThemeType) {
   const themeWithoutColors = tailwindTheme(theme) as any;
   themeWithoutColors.colors = undefined;
 
-  const colors = convertTocssVars(theme) as Record<
-    keyof T["colors"]["light"],
-    string
-  >;
+  const colors = convertTocssVars(theme) as T["colors"]["light"];
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", colorScheme);
