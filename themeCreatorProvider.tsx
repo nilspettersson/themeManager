@@ -50,7 +50,7 @@ function useThemeContext<T extends ThemeType>(theme: ThemeType) {
   return {
     theme: {
       colors: colors,
-      vars: themeWithoutColors as Omit<T, "colors">,
+      ...(themeWithoutColors as Omit<T, "colors">),
     },
     colorScheme,
     changeColorScheme: (scheme: Colors) => setColorScheme(scheme as string),
