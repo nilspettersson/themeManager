@@ -2,24 +2,49 @@
 
 import fs from "fs";
 import ts from "typescript";
+import chokidar from "chokidar";
 
-const themeCreator = () => {
-  let tsFilename = "";
-  let cssFilename = "";
-  let sass = false;
-  let tailwind = false;
-  if (process.argv.length >= 5) {
-    tsFilename = process.argv[3];
-    cssFilename = process.argv[4];
-    for (let i = 5; i < process.argv.length; i++) {
-      if (process.argv[i] == "sass") {
-        sass = true;
-      } else if (process.argv[i] == "tailwind") {
-        tailwind = true;
-      }
+let tsFilename = "";
+let cssFilename = "";
+let sass = false;
+let tailwind = false;
+let watch = false;
+
+if (process.argv.includes("--watch")) {
+  watch = true;
+}
+
+if (process.argv.length >= 5) {
+  tsFilename = process.argv[3];
+  cssFilename = process.argv[4];
+  for (let i = 5; i < process.argv.length; i++) {
+    if (process.argv[i] == "sass") {
+      sass = true;
+    } else if (process.argv[i] == "tailwind") {
+      tailwind = true;
     }
-  } else throw "Missing arguments";
+  }
+} else throw "Missing arguments";
 
+if (!watch) {
+  themeCreator(tsFilename, cssFilename, sass, tailwind);
+} else {
+  const watcher = chokidar.watch([tsFilename], {
+    persistent: true,
+  });
+
+  watcher.on("change", (path) => {
+    console.log(`File ${path} has been changed, recompiling...`);
+    themeCreator(tsFilename, cssFilename, sass, tailwind);
+  });
+}
+
+function themeCreator(
+  tsFilename: string,
+  cssFilename: string,
+  sass: boolean,
+  watch: boolean
+) {
   fs.readFile(tsFilename, "utf8", (err, data) => {
     if (err) {
       console.error(err);
@@ -97,7 +122,7 @@ const themeCreator = () => {
       }
     });
   });
-};
+}
 
 function getValuesInobjectRecursive(root: string, object: any) {
   const values: Array<{ key: string; value: string }> = [];
@@ -121,5 +146,3 @@ function getValuesInobjectRecursive(root: string, object: any) {
   }
   return values;
 }
-
-themeCreator();
