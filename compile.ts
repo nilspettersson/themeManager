@@ -88,7 +88,7 @@ function themeCreator(tsFilename: string, cssFilename: string, sass: boolean) {
           sassVariables = sassColors;
         }
 
-        allThemeColors.push(
+        allThemeColors.unshift(
           "html[data-theme='" + key + "'] { \n" + colors + "}\n"
         );
 
