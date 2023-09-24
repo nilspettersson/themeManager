@@ -55,7 +55,7 @@ When the css variables are generated they can be used in css or in react using t
 
 ```
 Compile: npx react-vario-theme compile src/styles/theme.ts src/styles/theme.scss
-watch: npx react-vario-theme compile src/styles/theme.ts src/styles/theme.scss --watch
+Watch: npx react-vario-theme compile src/styles/theme.ts src/styles/theme.scss --watch
 ```
 
 ### 3. Optional: Tailwind support
