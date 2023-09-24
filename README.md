@@ -46,17 +46,22 @@ export const varoTheme = {
     lg: "20px",
   },
 } as const satisfies ThemeType;
-
 ```
 
 ### 2. Generate css variables
+
 npx react-vario-theme compile "path to your theme object" "path and name of the css/sass file you want to create"
-When the css variables are generated they can be used in css or in react using the theme context provider. 
+When the css variables are generated they can be used in css or in react using the theme context provider.
+
 ```
-npx react-vario-theme compile src/styles/theme.ts src/styles/theme.scss
+Compile: npx react-vario-theme compile src/styles/theme.ts src/styles/theme.scss
+watch: npx react-vario-theme compile src/styles/theme.ts src/styles/theme.scss --watch
 ```
+
 ### 3. Optional: Tailwind support
+
 You can get all your theme css variables in tailwind using "tailwindTheme"
+
 ```typescript
 import { tailwindColors, tailwindTheme } from "react-vario-theme";
 import { type Config } from "tailwindcss";
@@ -67,7 +72,6 @@ export default {
   theme: tailwindTheme(varoTheme),
   plugins: [],
 } satisfies Config;
-
 ```
 
 ### 3. Use `VarioThemeProvider`
@@ -76,7 +80,7 @@ Wrap your application with the `VarioThemeProvider`.
 
 ```jsx
 import { varoTheme } from "~/styles/theme";
-import { VarioThemeProvider } from 'react-vario-theme';
+import { VarioThemeProvider } from "react-vario-theme";
 
 const App = () => {
   return (
@@ -96,7 +100,7 @@ import { varoTheme } from "~/styles/theme";
 const MyComponent = () => {
   const { theme, colorScheme, changeColorScheme } =
     useVarioTheme<typeof varoTheme>();
-  
+
   return (
     <button
       style={{ backgroundColor: theme.colors.primary }}
