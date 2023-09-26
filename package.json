@@ -1,5 +1,9 @@
 {
   "name": "react-vario-theme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nilspettersson/themeManager"
+  },
   "version": "3.0.1",
   "description": "Versatile theming tool for React applications, effortlessly transforming TypeScript objects into CSS variables.",
   "keywords": [
