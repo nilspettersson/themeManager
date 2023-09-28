@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "jsx": "preserve",
+    "target": "ES2016",
+    "module": "ESNext",
+    "lib": ["es2017", "es7", "es6", "dom"],
+    "outDir": "../dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "skipLibCheck": true
+  },
+  "exclude": ["node_modules", "dist", "testing"]
+}

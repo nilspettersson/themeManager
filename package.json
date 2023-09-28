@@ -27,7 +27,8 @@
     "dist/*"
   ],
   "scripts": {
-    "tsc": "tsc"
+    "tsc-cli": "tsc -p cli/tsconfig.json",
+    "tsc-components": "tsc -p components/tsconfig.json"
   },
   "author": "Nils Pettersson",
   "license": "ISC",
