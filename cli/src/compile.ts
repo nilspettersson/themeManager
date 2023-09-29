@@ -50,7 +50,7 @@ function themeCreator(tsFilename: string, cssFilename: string, sass: boolean) {
 
       const result = ts.transpileModule(data, {
         compilerOptions: {
-          target: ts.ScriptTarget.ES2015,
+          target: ts.ScriptTarget.ES2017,
           module: ts.ModuleKind.CommonJS,
         },
       });
