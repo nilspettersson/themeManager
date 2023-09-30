@@ -37,6 +37,7 @@ export default [
     ],
   },
   {
+    external: ["react", "react-dom"],
     input: "src/index.ts",
     output: [
       {
