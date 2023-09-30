@@ -31,7 +31,7 @@ export function generateValues<Count extends keyof CountMap>(
   return values as GenerateValuesReturn<Count>;
 }
 
-function lighten(hex: string, percent: number): string {
+export function lighten(hex: string, percent: number): string {
   if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex))
     throw new Error("Invalid hex color code");
   const adjust = 1 + percent / 100;
