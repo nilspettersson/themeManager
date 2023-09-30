@@ -4,7 +4,7 @@
     "type": "git",
     "url": "https://github.com/nilspettersson/themeManager"
   },
-  "version": "3.1.0-beta.10",
+  "version": "3.1.0-beta.11",
   "description": "Versatile theming tool for React applications, effortlessly transforming TypeScript objects into CSS variables.",
   "keywords": [
     "React theming",
@@ -17,16 +17,18 @@
     "context",
     "provider"
   ],
-  "main": "dist/index.js",
-  "module": "dist/index.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "bin": {
-    "compile": "dist/compile.js"
+    "compile": "dist/cli/compile.js"
   },
-  "types": "dist",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/*"
   ],
   "scripts": {
+    "rollup": "rollup -c",
+    "build:cli": "tsc src/compile.ts --outDir dist/cli",
     "tsc-cli": "tsc -p cli/tsconfig.json",
     "tsc-components": "tsc -p components/tsconfig.json"
   },
@@ -37,10 +39,16 @@
     "react-dom": ">=16.8.0"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.4",
+    "@rollup/plugin-node-resolve": "^15.2.1",
+    "@rollup/plugin-typescript": "^11.1.4",
     "@types/node": "^20.6.0",
     "@types/react": "^18.2.6",
     "react": "18.2.0",
+    "rollup": "^3.29.4",
+    "rollup-plugin-dts": "^6.0.2",
     "ts-node": "^10.9.1",
+    "tslib": "^2.6.2",
     "typescript": "^5.2.2"
   },
   "dependencies": {
