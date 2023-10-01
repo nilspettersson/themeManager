@@ -82,3 +82,36 @@ export function darken(hex: string, percent: number): string {
     .toString(16)
     .padStart(2, "0")}${blue.toString(16).padStart(2, "0")}`;
 }
+
+export function colorVariants<
+  T extends {
+    color: string;
+    variants: Record<string, number>;
+    additionalColors?: Record<string, string>;
+  }
+>(input: T) {
+  const { color, variants, additionalColors } = input;
+  const output: Record<string, string> = { default: color };
+  output["default"] = color;
+
+  for (let key in variants)
+    output[key] = lighten(color, variants[key] as number);
+
+  for (const key in additionalColors) {
+    output[key] = additionalColors[key] as string;
+  }
+  return output as Record<string, string> &
+    T["variants"] &
+    T["additionalColors"];
+}
+
+export function brightnessVariants<T extends Record<string, number>>(
+  color: string,
+  variants: T
+) {
+  const output = [] as any;
+  output["default"] = color;
+  for (let key in variants)
+    output[key] = lighten(color, variants[key] as number);
+  return output as T & { default: string };
+}
