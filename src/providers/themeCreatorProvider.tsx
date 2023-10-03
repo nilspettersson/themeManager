@@ -5,8 +5,8 @@ import {
   useEffect,
   useState,
 } from "react";
-import { ThemeType } from "./types";
-import { tailwindTheme } from "./utils/tailwind";
+import { tailwindTheme } from "../utils/tailwind";
+import { ThemeType } from "../utils/types";
 
 function convertTocssVars(theme: any) {
   const key = Object.keys(theme.colors)[0];

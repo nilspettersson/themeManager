@@ -96,6 +96,7 @@ const App = () => {
 You can now access theme variables anywhere within your components.
 
 ```jsx
+import { useVarioTheme } from "react-vario-theme";
 import { varoTheme } from "~/styles/theme";
 const MyComponent = () => {
   const { theme, colorScheme, changeColorScheme } =
@@ -119,7 +120,7 @@ Props:
 
 - `theme`: The theme object containing key-value pairs of CSS variables.
 
-### `useCustomTheme<T>()`
+### `useVarioTheme<T>()`
 
 Returns:
 
