@@ -27,10 +27,7 @@
     "dist/*"
   ],
   "scripts": {
-    "rollup": "rollup -c",
-    "build:cli": "tsc src/compile.ts --outDir dist/cli",
-    "tsc-cli": "tsc -p cli/tsconfig.json",
-    "tsc-components": "tsc -p components/tsconfig.json"
+    "rollup": "rollup -c"
   },
   "author": "Nils Pettersson",
   "license": "ISC",
