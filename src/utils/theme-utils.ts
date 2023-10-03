@@ -31,56 +31,82 @@ export function generateValues<Count extends keyof CountMap>(
   return values as GenerateValuesReturn<Count>;
 }
 
-export function lighten(hex: string, percent: number): string {
+function adjustBrightness(hex: string, percent: number): string {
   if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex))
     throw new Error("Invalid hex color code");
-  const adjust = 1 + percent / 100;
 
-  if (hex.length === 4) {
-    hex = `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`;
+  // Convert hex to RGB
+  let r = parseInt(hex.slice(1, 3), 16);
+  let g = parseInt(hex.slice(3, 5), 16);
+  let b = parseInt(hex.slice(5, 7), 16);
+
+  // Convert RGB to HSL
+  (r /= 255), (g /= 255), (b /= 255);
+  let max = Math.max(r, g, b),
+    min = Math.min(r, g, b);
+  let h = (max + min) / 2;
+  let s = (max + min) / 2;
+  let l = (max + min) / 2;
+
+  if (max === min) {
+    h = s = 0;
+  } else {
+    let d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
+    }
+    h /= 6;
   }
 
-  let red = parseInt(hex.slice(1, 3), 16);
-  let green = parseInt(hex.slice(3, 5), 16);
-  let blue = parseInt(hex.slice(5, 7), 16);
+  // Adjust lightness
+  l = l + percent / 100;
+  l = Math.min(1, Math.max(0, l));
 
-  red = Math.round(red * adjust);
-  green = Math.round(green * adjust);
-  blue = Math.round(blue * adjust);
+  // Convert HSL back to RGB
+  function hue2rgb(p: number, q: number, t: number) {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
+  }
 
-  red = Math.max(0, Math.min(255, red));
-  green = Math.max(0, Math.min(255, green));
-  blue = Math.max(0, Math.min(255, blue));
+  if (s === 0) {
+    r = g = b = l;
+  } else {
+    let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    let p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1 / 3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1 / 3);
+  }
 
-  return `#${red.toString(16).padStart(2, "0")}${green
+  // Convert RGB back to hex
+  return `#${Math.round(r * 255)
     .toString(16)
-    .padStart(2, "0")}${blue.toString(16).padStart(2, "0")}`;
+    .padStart(2, "0")}${Math.round(g * 255)
+    .toString(16)
+    .padStart(2, "0")}${Math.round(b * 255)
+    .toString(16)
+    .padStart(2, "0")}`;
+}
+
+export function lighten(hex: string, percent: number): string {
+  return adjustBrightness(hex, percent);
 }
 
 export function darken(hex: string, percent: number): string {
-  if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex))
-    throw new Error("Invalid hex color code");
-
-  const adjust = 1 - percent / 100;
-  if (hex.length === 4) {
-    hex = `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`;
-  }
-
-  let red = parseInt(hex.slice(1, 3), 16);
-  let green = parseInt(hex.slice(3, 5), 16);
-  let blue = parseInt(hex.slice(5, 7), 16);
-
-  red = Math.round(red * adjust);
-  green = Math.round(green * adjust);
-  blue = Math.round(blue * adjust);
-
-  red = Math.max(0, Math.min(255, red));
-  green = Math.max(0, Math.min(255, green));
-  blue = Math.max(0, Math.min(255, blue));
-
-  return `#${red.toString(16).padStart(2, "0")}${green
-    .toString(16)
-    .padStart(2, "0")}${blue.toString(16).padStart(2, "0")}`;
+  return adjustBrightness(hex, -percent);
 }
 
 export function colorVariants<
