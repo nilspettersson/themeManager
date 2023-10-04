@@ -127,8 +127,8 @@ export function colorVariants<
     output[key] = additionalColors[key] as string;
   }
   return output as Record<string, string> &
-    T["variants"] &
-    T["additionalColors"];
+    Record<keyof T["variants"], string> &
+    Record<keyof T["additionalColors"], string> & { default: string };
 }
 
 export function brightnessVariants<T extends Record<string, number>>(
@@ -139,5 +139,5 @@ export function brightnessVariants<T extends Record<string, number>>(
   output["default"] = color;
   for (let key in variants)
     output[key] = lighten(color, variants[key] as number);
-  return output as T & { default: string };
+  return output as Record<keyof T, string> & { default: string };
 }
