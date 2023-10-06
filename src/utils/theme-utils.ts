@@ -126,8 +126,7 @@ export function colorVariants<
   for (const key in additionalColors) {
     output[key] = additionalColors[key] as string;
   }
-  return output as Record<string, string> &
-    Record<keyof T["variants"], string> &
+  return output as Record<keyof T["variants"], string> &
     Record<keyof T["additionalColors"], string> & { default: string };
 }
 
