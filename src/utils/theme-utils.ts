@@ -140,3 +140,66 @@ export function brightnessVariants<T extends Record<string, number>>(
     output[key] = lighten(color, variants[key] as number);
   return output as Record<keyof T, string> & { default: string };
 }
+
+type ReplaceDotWithDash<T extends string> = T extends `${infer A}.${infer B}`
+  ? `${A}-${B}`
+  : T;
+type Flatten<T extends object> = object extends T
+  ? object
+  : {
+      [K in keyof T]-?: (
+        x: NonNullable<T[K]> extends infer V
+          ? V extends object
+            ? V extends readonly any[]
+              ? Pick<T, K>
+              : Flatten<V> extends infer FV
+              ? {
+                  [P in keyof FV as `${Extract<K, string | number>}.${Extract<
+                    P,
+                    string | number
+                  >}`]: FV[P];
+                }
+              : never
+            : Pick<T, K>
+          : never
+      ) => void;
+    } extends Record<keyof T, (y: infer O) => void>
+  ? O extends infer U
+    ? { [K in keyof O]: O[K] }
+    : never
+  : never;
+
+export function flatten<T extends object, TT extends string>(
+  obj: T,
+  prefix: TT
+) {
+  const result: any = {};
+
+  const recurse = (currentObj: any, currentPrefix: string) => {
+    for (const key in currentObj) {
+      if (Object.hasOwnProperty.call(currentObj, key)) {
+        const value = currentObj[key];
+        const newPrefix = currentPrefix ? `${currentPrefix}-${key}` : key;
+        if (value && typeof value === "object" && !Array.isArray(value)) {
+          recurse(value, newPrefix);
+        } else {
+          result[prefix + newPrefix] = value;
+        }
+      }
+    }
+  };
+  recurse(obj, "");
+
+  const output = result as Flatten<T>;
+  type ColorTypes = keyof typeof output & string;
+  type TransformedColorTypes = {
+    [Key in ColorTypes as ReplaceDotWithDash<Key>]: string;
+  };
+  type FlattenType = {
+    [Key in keyof TransformedColorTypes as ReplaceDotWithDash<`${typeof prefix}${Key}`>]: string;
+  };
+  return result as FlattenType;
+}
+export function flattenColors<T extends object>(obj: T) {
+  return flatten(obj, "color-");
+}
