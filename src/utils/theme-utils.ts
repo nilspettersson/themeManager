@@ -250,5 +250,7 @@ export const generateColors = <T extends number>(
       rgbToHex(Math.round(rValue), Math.round(gValue), Math.round(bValue))
     );
   }
-  return reverse ? colorArray.reverse() : (colorArray as TupleOf<T, string>);
+  return reverse
+    ? (colorArray.reverse() as TupleOf<T, string>)
+    : (colorArray as TupleOf<T, string>);
 };

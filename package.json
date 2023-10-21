@@ -4,7 +4,7 @@
     "type": "git",
     "url": "https://github.com/nilspettersson/themeManager"
   },
-  "version": "3.5.0",
+  "version": "3.5.1",
   "description": "Versatile theming tool for React applications, effortlessly transforming TypeScript objects into CSS variables.",
   "keywords": [
     "React theming",
