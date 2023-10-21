@@ -203,3 +203,52 @@ export function flatten<T extends object, TT extends string>(
 export function flattenColors<T extends object>(obj: T) {
   return flatten(obj, "color-");
 }
+
+const componentToHex = (c: number) => {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+};
+export const rgbToHex = (r: number, g: number, b: number) => {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+};
+
+export const hexToRgb = (hex: string) => {
+  let r = parseInt(hex.slice(1, 3), 16);
+  let g = parseInt(hex.slice(3, 5), 16);
+  let b = parseInt(hex.slice(5, 7), 16);
+  return { r, g, b };
+};
+
+type TupleOf<
+  Length extends number,
+  ElementType,
+  T extends any[] = []
+> = T["length"] extends Length
+  ? T
+  : TupleOf<Length, ElementType, [ElementType, ...T]>;
+
+export const generateColors = <T extends number>(
+  hex: string,
+  count: T,
+  reverse?: boolean
+) => {
+  if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex))
+    throw new Error("Invalid hex color code");
+
+  const rgb = hexToRgb(hex);
+
+  count--;
+  let colorArray: string[] = [];
+  const max = Math.max(Math.max(rgb.r, Math.max(rgb.g, rgb.b)), 1);
+  for (let i = -1; i < count; i++) {
+    const stepMult = i + 1;
+    let step = 255 / (max * count);
+    let rValue = rgb.r * step * stepMult;
+    let gValue = rgb.g * step * stepMult;
+    let bValue = rgb.b * step * stepMult;
+    colorArray.push(
+      rgbToHex(Math.round(rValue), Math.round(gValue), Math.round(bValue))
+    );
+  }
+  return reverse ? colorArray.reverse() : (colorArray as TupleOf<T, string>);
+};
