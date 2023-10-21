@@ -27,15 +27,21 @@ export const varoTheme = {
   colors: {
     light: {
       primary: "#007bff",
+      accent: {
+        1: colorVariants({
+          color: colors.accent[1],
+          variants: { hover: -10, active: -10 },
+          additionalColors: { text: colors.text.light },
+        }),
+      },
       text: {
-        default: "#6c757d",
+        default: "#000000",
         link: "#007bff",
       },
     },
     dark: {
-      primary: "#007bff",
       text: {
-        default: "#6c757d",
+        default: "#ffffff",
         link: "#007bff",
       },
     },
