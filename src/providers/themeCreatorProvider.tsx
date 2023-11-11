@@ -78,7 +78,7 @@ export function useVarioTheme<T extends ThemeType>() {
 
 export function createVarioTheme<T extends ThemeType>(theme: T) {
   return {
-    useVarioTheme: function useVarioTheme<T extends ThemeType>() {
+    useVarioTheme: function useVarioTheme() {
       return useContext(ThemeContext) as ReturnType<typeof useThemeContext<T>>;
     },
     VarioThemeProvider: function VarioThemeProvider({
