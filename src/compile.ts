@@ -71,6 +71,7 @@ function themeCreator(tsFilename: string, cssFilename: string, sass: boolean) {
       let allThemeColors: Array<string> = [];
       let rootColors = "";
       let sassVariables = "";
+      let systemDarkTheme = "";
       for (const key in themeColors) {
         const themeColor = themeColors[key];
 
@@ -87,13 +88,21 @@ function themeCreator(tsFilename: string, cssFilename: string, sass: boolean) {
           rootColors = colors;
           sassVariables = sassColors;
         }
-
-        allThemeColors.unshift(
-          "html[data-theme='" + key + "'] { \n" + colors + "}\n"
-        );
+        if (key !== "light") {
+          allThemeColors.unshift(
+            "html[data-theme='" + key + "'] { \n" + colors + "}\n"
+          );
+        }
+        if (key === "dark") {
+          systemDarkTheme = "html body { \n" + colors + "}\n";
+        }
 
         index++;
       }
+
+      allThemeColors.push(
+        "@media (prefers-color-scheme: dark) { \n" + systemDarkTheme + "}\n"
+      );
 
       const values = getValuesInobjectRecursive("", themeObject);
       let cssVariables = "";
