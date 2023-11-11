@@ -35,8 +35,8 @@ function getValuesInobjectRecursive(root: string, object: any) {
 }
 
 function useThemeContext<T extends ThemeType>(theme: ThemeType) {
-  type Colors = keyof T["colors"];
-  const [colorScheme, setColorScheme] = useState<string>("light");
+  type Colors = keyof T["colors"] | "system";
+  const [colorScheme, setColorScheme] = useState<string>("system");
 
   const themeWithoutColors = tailwindTheme(theme) as any;
   themeWithoutColors.colors = undefined;
@@ -52,7 +52,7 @@ function useThemeContext<T extends ThemeType>(theme: ThemeType) {
       ...(themeWithoutColors as Omit<T, "colors">),
       colors: colors,
     },
-    colorScheme,
+    colorScheme: colorScheme as Colors & string,
     changeColorScheme: (scheme: Colors) => setColorScheme(scheme as string),
   };
 }
