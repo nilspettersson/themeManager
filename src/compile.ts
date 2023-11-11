@@ -94,7 +94,7 @@ function themeCreator(tsFilename: string, cssFilename: string, sass: boolean) {
           );
         }
         if (key === "dark") {
-          systemDarkTheme = "html body { \n" + colors + "}\n";
+          systemDarkTheme = "html[data-theme='system'] { \n" + colors + "}\n";
         }
 
         index++;
