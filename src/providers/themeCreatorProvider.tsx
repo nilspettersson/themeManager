@@ -75,3 +75,21 @@ export function VarioThemeProvider<T extends ThemeType>({
 export function useVarioTheme<T extends ThemeType>() {
   return useContext(ThemeContext) as ReturnType<typeof useThemeContext<T>>;
 }
+
+export function createVarioTheme<T extends ThemeType>(theme: T) {
+  return {
+    useVarioTheme: function useVarioTheme<T extends ThemeType>() {
+      return useContext(ThemeContext) as ReturnType<typeof useThemeContext<T>>;
+    },
+    VarioThemeProvider: function VarioThemeProvider({
+      children,
+    }: {
+      children: ReactNode;
+    }) {
+      const ctx = useThemeContext<typeof theme>(theme);
+      return (
+        <ThemeContext.Provider value={ctx}>{children}</ThemeContext.Provider>
+      );
+    },
+  };
+}
